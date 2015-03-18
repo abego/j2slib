@@ -855,7 +855,9 @@ Clazz.searchAndExecuteMethod = function (objThis, claxxRef, fxName, funParams) {
 		 * exceptions. In Java codes, extending Object can call super
 		 * default Object#constructor, which is not defined in JS.
 		 */
-		return ;
+		// return; // ub: ignoring the above comment and throw an execption
+		// when not found.  
+		throw new NoSuchMethodException ();
 	}
 	// TODO: should be java.lang.NoSuchMethodException
 	throw new Clazz.MethodNotFoundException (objThis, claxxRef, 
