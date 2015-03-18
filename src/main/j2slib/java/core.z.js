@@ -736,9 +736,9 @@ return result;
 },"~S");
 
 java.lang.B00lean=Boolean;
-java.lang.Boolean=Boolean=function(){
+java.lang.Boolean=Boolean;/*=function(){
 Clazz.instantialize(this,arguments);
-};
+};*/
 if(Clazz.supportsNativeObject){
 for(var i=0;i<Clazz.extendedObjectMethods.length;i++){
 var p=Clazz.extendedObjectMethods[i];

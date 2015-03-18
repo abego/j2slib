@@ -113,3 +113,16 @@ With this extra null check and debugger call it is now easier to track down what
 		...
 
 
+### Use native JavaScript Boolean class as java.lang.Boolean
+
+In the original code `java.lang.Boolean` is implemented as a Java class, even when running in native mode. This leads to various problems. Just using the native JavaScript Boolean implementation fixes these issues.
+
+#### Fix (in `core.z.js`)
+
+	java.lang.Boolean=Boolean;/*=function(){
+		Clazz.instantialize(this,arguments);
+	};*/
+
+*(Original code in comment)*
+ 
+
