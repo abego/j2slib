@@ -1001,6 +1001,8 @@ String.prototype.$generateExpFunction=function(str){
 var arr=[];
 var orders=[];
 var idx=0;
+//PM 3/4/2014 Moved up. See comment below.
+var funStr="f = function (";
 arr[0]="";
 var i=0;
 for(;i<str.length;i++){
@@ -1029,7 +1031,8 @@ arr[idx]+="\\\"";
 arr[idx]+=ch;
 }
 }
-var funStr="f = function (";
+// PM 3/4/2014 Moved to line 1004 to prevent closure compiler from removing "var" keyword.
+//var funStr="f = function (";
 var max=Math.max.apply({},orders);
 for(i=0;i<=max;i++){
 funStr+="$"+i;
@@ -1042,9 +1045,12 @@ for(i=0;i<arr.length-1;i++){
 funStr+="\""+arr[i]+"\" + $"+orders[i]+" + ";
 }
 funStr+="\""+arr[i]+"\"; }";
-var f=null;
+// PM 3/4/2014 Commented out to prevent closure compiler from reducing to "return null".
+//var f=null;
 eval(funStr);
-return f;
+// PM 3/4/2014 Since f is no longer initialized to null instead check "undefined" to determine return value.
+//return f;
+return typeof f == "undefined" ? null : f;
 };
 
 String.prototype.replaceAll=function(exp,str){
