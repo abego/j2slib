@@ -95,3 +95,21 @@ Code:
 Insert code (e.g.) behind `Clazz.innerFunctions.isAssignableFrom`.
 
 
+### Fall into debugger when ClazzLoader.updateNode fails
+
+Tracking down problems when a class cannot be loaded is quite difficult. In the original code this leads to a TypeError when `nn` was `null` because the class was not found.
+
+#### Fix (in `j2slib.src.z.js`)
+
+With this extra null check and debugger call it is now easier to track down what class was not found.
+
+
+	var nn = ClazzLoader.findClass (list[j]);
+	if (!nn) {
+		debugger;
+	}
+	if (nn && nn.status != ClazzNode.STATUS_DECLARED
+				&& nn !== node) {
+		...
+
+

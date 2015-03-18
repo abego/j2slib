@@ -5078,7 +5078,10 @@ $_L(["$wt.widgets.Widget","$wt.graphics.Drawable"],"$wt.widgets.Control",
 						var list = node.declaration.clazzList;
 						for (var j = 0; j < list.length; j++) {
 							var nn = ClazzLoader.findClass (list[j]);
-							if (nn.status != ClazzNode.STATUS_DECLARED
+							if (!nn) {
+								debugger;
+							}
+							if (nn && nn.status != ClazzNode.STATUS_DECLARED
 									&& nn !== node) {
 			nn.status = ClazzNode.STATUS_DECLARED;
 			if (ClazzLoader.definedClasses != null) {
