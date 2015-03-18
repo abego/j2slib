@@ -804,6 +804,9 @@ Clazz.searchAndExecuteMethod = function (objThis, claxxRef, fxName, funParams) {
 			fx.lastMethod = f;
 			return f.apply (objThis, methodParams);
 		} else { // missed default constructor ?
+			if (console && console.warn) {
+				console.warn("Clazz.searchAndExecuteMethod failed for "+fxName+ " of "+(claxxRef ? claxxRef.toString() : "unknown class"));
+			}
 			return ;
 		}
 	}

@@ -113,6 +113,29 @@ With this extra null check and debugger call it is now easier to track down what
 		...
 
 
+### Log a warning to console when SAEM cannot find a function
+
+When Clazz.searchAndExecuteMethod cannot find a function it quietly returned, leaving no clue what went wrong. 
+
+In the related comment it say not finding a function may be caused by a missing default constructor. In that case doing nothing would be fine. 
+
+However we never encountered the "missing default constructor" case but problems caused by bugs in the J2S runtime. 
+
+Logging a warning when a function is not found gives the developer a hint where to look (when in debugging mode). In case of the mentioned "default constructor" things just work as before (for the end user) as the log information is only visible while debugging.
+
+
+#### Fix (in `j2slib.src.z.js`)
+
+
+	} else { // missed default constructor ?
+		if (console && console.warn) {
+			console.warn("Clazz.searchAndExecuteMethod failed for "+fxName+ " of "+(claxxRef ? claxxRef.toString() : "unknown class"));
+		}
+		return ;
+	}
+
+
+
 ### Use native JavaScript Boolean class as java.lang.Boolean
 
 In the original code `java.lang.Boolean` is implemented as a Java class, even when running in native mode. This leads to various problems. Just using the native JavaScript Boolean implementation fixes these issues.
