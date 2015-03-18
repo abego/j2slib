@@ -191,3 +191,30 @@ Actually this seems to be a bug in Google's Closure compiler. As we have no way 
 	};
 
 
+### Bug: Throwable.fillInStackTrace may throw a TypeError
+
+Throwable.fillInStackTrace (in `core.z.js`) may run into a null pointer exception / TypeError because `superCaller` may be `null`.
+
+Original code: 
+
+	...
+	if(superCaller!=null){
+		callerList[callerList.length]=superCaller;
+	}
+	caller=superCaller.arguments.callee.caller;
+	...
+
+#### Fix (in `core.z.js`)
+
+	$_M(c$,"fillInStackTrace",
+	function(){
+	this.stackTrace=new Array();
+	var caller=arguments.callee.caller;
+	var superCaller=null;
+	...
+	if(superCaller!=null){
+		callerList[callerList.length]=superCaller;
+	}
+	caller=(superCaller && superCaller.arguments && superCaller.arguments.callee) ? superCaller.arguments.callee.caller : null;
+	...
+

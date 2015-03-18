@@ -1876,7 +1876,7 @@ noLooping=false;
 if(superCaller!=null){
 callerList[callerList.length]=superCaller;
 }
-caller=superCaller.arguments.callee.caller;
+caller=(superCaller && superCaller.arguments && superCaller.arguments.callee) ? superCaller.arguments.callee.caller : null;
 }
 Clazz.initializingException=false;
 return this;
