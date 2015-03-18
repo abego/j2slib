@@ -182,7 +182,16 @@ return this.pat.regexp.lastIndex;
 },"~N");
 $_M(c$,"matches",
 function(){
-return this.find();
+// the find must match the complete input and not modify the RE object
+var old_lastIndex = this.pat.regexp.lastIndex;
+try {
+this.find();
+var r = this.results;
+return r && r.length > 0 && r[0].length === r.input.length;
+} finally {
+// Restore the old state of the RE object
+this.pat.regexp.lastIndex = old_lastIndex;	
+}
 });
 c$.quoteReplacement=$_M(c$,"quoteReplacement",
 function(string){

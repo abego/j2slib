@@ -247,3 +247,31 @@ LinkedHashSet is implemented using LinkedHashMap, however LinkedHashMap is only 
 	$_L(["java.util.HashSet","$.Set","java.util.LinkedHashMap"],"java.util.LinkedHashSet",[],function(){
 
 
+### Bug: Matcher.matches finds subsequences (not entire region) and modifies the RE object
+
+In the original implementation Matches.matches() just calls "this.find()"
+
+	$_M(c$,"matches",
+	function(){
+	return this.find();
+	});
+
+"find()" attempts to find the next **subsequence** of the input sequence that matches the pattern. However "matches()", according to the Java documentation, attempts to match **the entire region** against the pattern.
+
+Also the original implementation modified the RegExp object, leading to problems when using the same Matcher object multiple times.
+
+#### Fix (in `Matcher.js`) 
+
+	$_M(c$,"matches",
+	function(){
+	// the find must match the complete input and not modify the RE object
+	var old_lastIndex = this.pat.regexp.lastIndex;
+	try {
+	this.find();
+	var r = this.results;
+	return r && r.length > 0 && r[0].length === r.input.length;
+	} finally {
+	// Restore the old state of the RE object
+	this.pat.regexp.lastIndex = old_lastIndex;	
+	}
+	});
