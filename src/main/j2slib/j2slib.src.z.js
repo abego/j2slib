@@ -2949,7 +2949,7 @@ var reflect = Clazz.declarePackage ("java.lang.reflect");
 Clazz.declarePackage ("java.security");
 
 Clazz.innerFunctionNames = Clazz.innerFunctionNames.concat (["getSuperclass",
-		"isAssignableFrom", "getMethods", "getMethod", "getDeclaredMethods", 
+		"isAssignableFrom", "isInstance", "getResource", "getMethods", "getMethod", "getDeclaredMethods", 
 		"getDeclaredMethod", "getConstructor", "getModifiers", "isArray", "newInstance"]);
 
 Clazz.innerFunctions.getSuperclass = function () {
@@ -2957,6 +2957,19 @@ Clazz.innerFunctions.getSuperclass = function () {
 };
 Clazz.innerFunctions.isAssignableFrom = function (clazz) {
 	return Clazz.getInheritedLevel (clazz, this) >= 0;	
+};
+Clazz.innerFunctions.isInstance = function (obj) {
+	return Clazz.instanceOf(obj, this);
+};
+
+
+Clazz.innerFunctions.getResource = function (name) {
+	// everything up to the last "/" (including the "/")
+	function path(s) {
+		return s.substring(0,s.lastIndexOf("/")+1);
+	}
+	var classpath = ClazzLoader.getClasspathFor (this.getName());
+	return new java.net.URL(path(document.URL)+path(classpath)+name);
 };
 Clazz.innerFunctions.getConstructor = function () {
 	return new java.lang.reflect.Constructor (this, [], [], 

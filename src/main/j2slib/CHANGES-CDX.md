@@ -50,3 +50,48 @@ A similar change is applied when calling super does not find the constructor (se
         throw new Clazz.MethodNotFoundException(To, Tz, Nf, Clazz.getParamsType(funParams).typeString);
     };
 
+
+### Add Class/Clazz.isInstance(object); Add Class/Clazz.getResource(name)
+
+
+In the original code the methods `Class/Clazz.isInstance(object)` and `Class/Clazz.getResource(name)` are missing.
+
+#### Fix (in `j2slib.src.z.js`)
+
+Add `"isInstance"` and `"getResource"` to the array that initializes `Clazz.innerFunctionNames`:
+
+	Clazz.innerFunctionNames = Clazz.innerFunctionNames.concat (["getSuperclass",
+				"isAssignableFrom", "isInstance", "getResource", "getMethods", "getMethod", "getDeclaredMethods", 
+				"getDeclaredMethod", "getConstructor", "getModifiers", "isArray", "newInstance"]);
+
+
+For `Clazz.isInstance(object)` provide a simple implementation of that always returns true (sufficient for now).
+
+Code:
+
+	Clazz.innerFunctions.isInstance = function (obj) {
+		return true;//FIXME: Class.isInstance always returns true
+	};
+
+For `Clazz.getResource(name)` implement a function that returns the URL to the resource with the given name.
+
+The URL is concatenation of 
+
+* document.URL,
+* classpath for this class,
+* name
+
+Code:
+
+	Clazz.innerFunctions.getResource = function (name) {
+		// everything up to the last "/" (including the "/")
+		function path(s) {
+			return s.substring(0,s.lastIndexOf("/")+1);
+		}
+		var classpath = ClazzLoader.getClasspathFor (this.getName());
+		return new java.net.URL(path(document.URL)+path(classpath)+name);
+	};
+
+Insert code (e.g.) behind `Clazz.innerFunctions.isAssignableFrom`.
+
+
