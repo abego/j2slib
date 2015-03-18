@@ -238,3 +238,12 @@ Thread.sleep(millis) is implement using "busy waiting". The function returns aft
 	},"~N");
  
 
+### Bug: LinkedHashMap is not loaded before LinkedHashSet
+
+LinkedHashSet is implemented using LinkedHashMap, however LinkedHashMap is only in the list of the "optional" classes to load. The fix make LinkedHashMap a required class.
+
+#### Fix (in `LinkedHashSet.js`)
+
+	$_L(["java.util.HashSet","$.Set","java.util.LinkedHashMap"],"java.util.LinkedHashSet",[],function(){
+
+

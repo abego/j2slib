@@ -1,4 +1,4 @@
-$_L(["java.util.HashSet","$.Set"],"java.util.LinkedHashSet",["java.util.LinkedHashMap"],function(){
+$_L(["java.util.HashSet","$.Set","java.util.LinkedHashMap"],"java.util.LinkedHashSet",[],function(){
 c$=$_T(java.util,"LinkedHashSet",java.util.HashSet,[java.util.Set,Cloneable,java.io.Serializable]);
 $_K(c$,
 function(){
