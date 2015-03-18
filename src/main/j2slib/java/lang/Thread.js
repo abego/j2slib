@@ -14,7 +14,11 @@ if(Thread.J2S_THREAD==null){
 });
 c$.sleep=$_M(c$,"sleep",
 function(millis){
-alert("Thread.sleep is not implemented in Java2Script!");
+	var now = function() {return (new Date()).getTime();}
+	var start = now();
+	while (now() < start+millis) {
+		// busy waiting
+	}
 },"~N");
 $_K(c$,
 function(){

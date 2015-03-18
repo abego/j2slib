@@ -218,3 +218,23 @@ Original code:
 	caller=(superCaller && superCaller.arguments && superCaller.arguments.callee) ? superCaller.arguments.callee.caller : null;
 	...
 
+### Implement Thread.sleep
+
+In the original code calling Thread.sleep opens up an alert, reporting the missing implementation:
+
+	alert("Thread.sleep is not implemented in Java2Script!");
+
+#### Fix (in `Thread.js`)
+
+Thread.sleep(millis) is implement using "busy waiting". The function returns after millis milliseconds. 
+
+	c$.sleep=$_M(c$,"sleep",
+	function(millis){
+		var now = function() {return (new Date()).getTime();}
+		var start = now();
+		while (now() < start+millis) {
+			// busy waiting
+		}
+	},"~N");
+ 
+
