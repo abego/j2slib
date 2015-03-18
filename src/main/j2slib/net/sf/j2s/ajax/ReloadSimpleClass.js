@@ -1,0 +1,9 @@
+$_J("net.sf.j2s.ajax");
+$_L(["net.sf.j2s.ajax.SimpleRPCRunnable"],"net.sf.j2s.ajax.ReloadSimpleClass",null,function(){
+c$=$_C(function(){
+this.classes=null;
+this.done=false;
+$_Z(this,arguments);
+},net.sf.j2s.ajax,"ReloadSimpleClass",net.sf.j2s.ajax.SimpleRPCRunnable);
+$_s(c$,"classes","AX","done","b");
+});
